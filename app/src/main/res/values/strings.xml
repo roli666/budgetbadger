@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">BudgetBadger</string>
+    <string name="moviename">MovieName</string>
+    <string name="app_label">Search</string>
+    <string name="search_hint">Movie name</string>
 </resources>
