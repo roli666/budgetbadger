@@ -1,9 +1,9 @@
-package com.example.budgetbadger.Repositories
+package com.example.budgetbadger.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.budgetbadger.Entities.Movie
-import com.example.budgetbadger.Interfaces.WebService
+import com.example.budgetbadger.entities.Movie
+import com.example.budgetbadger.interfaces.WebService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

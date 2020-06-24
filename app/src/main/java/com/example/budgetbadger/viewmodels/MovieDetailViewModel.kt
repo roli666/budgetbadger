@@ -1,4 +1,4 @@
-package com.example.budgetbadger.ViewModels
+package com.example.budgetbadger.viewmodels
 
 import androidx.lifecycle.ViewModel
 
