@@ -37,7 +37,7 @@ class MovieListFragment : Fragment() {
                     Movie(
                         "Batman",
                         "Batman and the very long description",
-                        BitmapHelper.makeEmptyColoredBitmap(300, 200, 0xff000000),
+                        BitmapHelper.makeEmptyColoredBitmap(300, 200, 0xffff0000),
                         6.9f,
                         100000
                     )

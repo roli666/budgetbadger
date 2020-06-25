@@ -1,58 +1,53 @@
 package com.example.budgetbadger.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budgetbadger.R
 import com.example.budgetbadger.databinding.ActivityMainBinding
 import com.example.budgetbadger.databinding.ListRowBinding
 import com.example.budgetbadger.entities.Movie
+import kotlinx.android.synthetic.main.list_row.view.*
 
 class MovieItemAdapter(private val movies: List<Movie>) :
     RecyclerView.Adapter<MovieItemAdapter.MovieItemViewHolder>() {
 
-    class MovieItemViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
-        RecyclerView.ViewHolder(inflater.inflate(R.layout.list_row, parent, false)) {
-        private var binding: ListRowBinding = ListRowBinding.inflate(inflater)
-        private var mTitle: TextView
-        private var mPoster: ImageView
-        private var mDescription: TextView
-        private var mRating: TextView
-        private var mBudget: TextView
+    class MovieItemViewHolder(view: View) :
+        RecyclerView.ViewHolder(view) {
+        val mTitle: TextView = view.movieTitle
+        val mPoster: ImageView = view.moviePoster
+        val mDescription: TextView = view.movieDescription
+        val mRating: TextView = view.movieRating
+        val mBudget: TextView = view.movieBudget
+    }
 
-        init {
-            mTitle = binding.movieTitle
-            mPoster = binding.moviePoster
-            mDescription = binding.movieDescription
-            mRating = binding.movieRating
-            mBudget = binding.movieBudget
-        }
-
-        fun bind(movie: Movie) {
-            binding.movieTitle.apply {
-                text = movie.title
-            }
-
-            binding.moviePoster.setImageBitmap(movie.poster)
-            binding.movieDescription.text = movie.description
-            binding.movieRating.text = movie.rating.toString() + "/10"
-            binding.movieBudget.text = movie.budget.toString() + " $"
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
+        return MovieItemViewHolder(
+            LayoutInflater
+                .from(parent.context)
+                .inflate(R.layout.list_row, parent, false)
+        )
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        return MovieItemViewHolder(inflater, parent)
+    override fun onBindViewHolder(holder: MovieItemViewHolder, position: Int) {
+        val currentItem = movies[position]
+        with(holder)
+        {
+            mTitle.text = currentItem.title
+            mBudget.text = currentItem.budget.toString() + " $"
+            mRating.text = currentItem.rating.toString() + "\\10"
+            mPoster.setImageBitmap(currentItem.poster)
+            mDescription.text = currentItem.description
+        }
+
     }
 
     override fun getItemCount(): Int = movies.size
 
-    override fun onBindViewHolder(holder: MovieItemViewHolder, position: Int) {
-        val movie: Movie = movies[position]
-        holder.bind(movie)
-    }
 
 }
