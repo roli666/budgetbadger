@@ -1,12 +1,25 @@
 package com.example.budgetbadger.interfaces
 
-import com.example.budgetbadger.entities.Movie
+import com.example.budgetbadger.entities.MovieDetail
+import com.example.budgetbadger.entities.SearchResult
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface WebService {
 
     @GET("/search/movie")
-    fun getMovies(@Query("queryString") queryString: String): Call<List<Movie>>
+    fun getMovies(
+        @Query("api_key") apiKey: String,
+        @Query("queryString") queryString: String,
+        @Query("page") page: Int,
+        @Query("include_adult") adult: Boolean
+    ): Call<List<SearchResult>>
+
+    @GET("/movie/{movie_id}")
+    fun getMovieDetail(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String
+    ): Call<MovieDetail>
 }

@@ -27,13 +27,16 @@ class MovieDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = MovieDetailFragmentBinding.inflate(layoutInflater)
+        viewModel = activity?.run {
+            ViewModelProvider(this).get(MovieListSharedViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+        binding.movieDescription.text = viewModel.selected.value?.description
+        binding.movieTitle.text = viewModel.selected.value?.title
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MovieListSharedViewModel::class.java)
-        // TODO: Use the ViewModel
     }
 
 }
