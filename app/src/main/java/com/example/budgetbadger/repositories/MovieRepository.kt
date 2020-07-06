@@ -1,32 +1,47 @@
 package com.example.budgetbadger.repositories
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import com.example.budgetbadger.dagger.Configuration
 import com.example.budgetbadger.entities.Movie
-import com.example.budgetbadger.entities.SearchResult
+import com.example.budgetbadger.pojos.MovieDetail
+import com.example.budgetbadger.pojos.SearchResultBase
+import com.example.budgetbadger.helpers.BitmapHelper
+import com.example.budgetbadger.helpers.toMovie
 import com.example.budgetbadger.interfaces.WebService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MovieRepository @Inject constructor(private val webService: WebService) {
+class MovieRepository @Inject constructor(
+    private var retrofit: Retrofit
+) {
+    private val apiService: WebService = retrofit.create(WebService::class.java)
 
-    fun getMovies(queryString: String): LiveData<List<Movie>> {
-        val data = MutableLiveData<List<Movie>>()
-        webService.getMovies("", queryString, 1, false)
-            .enqueue(object : Callback<List<SearchResult>> {
+    fun getMovies(queryString: String, page: Int = 1, adult: Boolean = false): List<Movie> {
+        val data = mutableListOf<Movie>()
+        apiService.getMovies(Configuration.apiKey, queryString, page, adult)
+            .enqueue(object : Callback<SearchResultBase> {
 
                 override fun onResponse(
-                    call: Call<List<SearchResult>>,
-                    response: Response<List<SearchResult>>
+                    call: Call<SearchResultBase>,
+                    response: Response<SearchResultBase>
                 ) {
-                    TODO(response.body().toString())
+                    if (response.isSuccessful) {
+                        for (i in response.body()?.results!!) {
+                            data.add(
+                                i.toMovie(
+                                    MovieDetail(),
+                                    BitmapHelper.makeEmptyColoredBitmap(300, 300, 0x0000ff00)
+                                )
+                            )
+                        }
+                    }
                 }
 
-                override fun onFailure(call: Call<List<SearchResult>>, t: Throwable) {
+                override fun onFailure(call: Call<SearchResultBase>, t: Throwable) {
                     TODO()
                 }
             })

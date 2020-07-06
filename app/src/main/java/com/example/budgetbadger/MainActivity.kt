@@ -25,6 +25,9 @@ class MainActivity : AppCompatActivity(), MovieListFragment.OnMovieTapListener {
                 TODO("use query to get values")
             }
         }
+        binding.searchView.setOnSearchClickListener {
+            TODO("searching")
+        }
         setContentView(binding.root)
     }
 

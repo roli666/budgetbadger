@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.budgetbadger.adapters.MovieItemAdapter
+import com.example.budgetbadger.dagger.AppComponent
+import com.example.budgetbadger.dagger.AppModule
+import com.example.budgetbadger.dagger.DaggerAppComponent
 import com.example.budgetbadger.databinding.ListFragmentBinding
 import com.example.budgetbadger.entities.Movie
+import com.example.budgetbadger.repositories.MovieRepository
 import com.example.budgetbadger.viewmodels.MovieListSharedViewModel
-import com.example.budgetbadger.helpers.BitmapHelper
+import javax.inject.Inject
 
 class MovieListFragment : Fragment() {
 
@@ -20,10 +23,14 @@ class MovieListFragment : Fragment() {
         fun newInstance() = MovieListFragment()
     }
 
+    val applicationGraph: AppComponent = DaggerAppComponent.create()
     private lateinit var viewModel: MovieListSharedViewModel
     private lateinit var binding: ListFragmentBinding
 
-    lateinit var callback: OnMovieTapListener
+    @Inject
+    lateinit var repo: MovieRepository
+
+    private lateinit var callback: OnMovieTapListener
 
     fun setOnMovieSelectedListener(callback: OnMovieTapListener) {
         this.callback = callback
@@ -33,12 +40,12 @@ class MovieListFragment : Fragment() {
         fun onMovieSelected(movie: Movie)
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        applicationGraph.inject(this)
         binding = ListFragmentBinding.inflate(layoutInflater)
 
         binding.movieList.apply {
@@ -54,7 +61,8 @@ class MovieListFragment : Fragment() {
 
     private fun createMovieAdapter(): MovieItemAdapter {
         var movieAdapter = MovieItemAdapter(
-            listOf(
+            repo.getMovies("captain")
+            /*listOf(
                 Movie(
                     "Batman",
                     "Batman and the very long description",
@@ -62,7 +70,7 @@ class MovieListFragment : Fragment() {
                     6.9f,
                     100000
                 )
-            )
+            )*/
         )
         movieAdapter.onItemClick = { movie ->
             viewModel.select(movie)

@@ -11,8 +11,9 @@ import com.example.budgetbadger.R
 import com.example.budgetbadger.databinding.ListFragmentBinding
 import com.example.budgetbadger.databinding.MovieDetailFragmentBinding
 import com.example.budgetbadger.viewmodels.MovieListSharedViewModel
+import dagger.android.support.DaggerFragment
 
-class MovieDetailFragment : Fragment() {
+class MovieDetailFragment : DaggerFragment() {
 
     companion object {
         fun newInstance() =

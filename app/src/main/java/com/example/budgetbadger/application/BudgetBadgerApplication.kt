@@ -6,7 +6,8 @@ import com.example.budgetbadger.dagger.AppModule
 import com.example.budgetbadger.dagger.DaggerAppComponent
 
 class BudgetBadgerApplication : Application() {
-    private val component: AppComponent by lazy {
+
+    val component: AppComponent by lazy {
         DaggerAppComponent
             .builder()
             .appModule(AppModule(this))

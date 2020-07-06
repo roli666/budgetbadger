@@ -1,5 +1,6 @@
 package com.example.budgetbadger.dagger
 
+import com.example.budgetbadger.dagger.Configuration.baseURL
 import com.example.budgetbadger.repositories.MovieRepository
 import dagger.Module
 import dagger.Provides
@@ -10,12 +11,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-class APIModule(
-    val baseURL: String? = "https://api.themoviedb.org/3",
-    val apiKey: String = "43a7ea280d085bd0376e108680615c7f"
-) {
+class APIModule {
 
-    @Singleton
     @Provides
     fun provideOKHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
@@ -32,11 +29,6 @@ class APIModule(
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
-    }
-
-    @Provides
-    fun provideRetroRepository(): MovieRepository {
-        return MovieRepository(TODO("add movie repository"))
     }
 
 }
