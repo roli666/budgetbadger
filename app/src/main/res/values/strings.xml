@@ -10,4 +10,5 @@ Quisque molestie varius nulla eget bibendum. Interdum et malesuada fames ac ante
 
 Nunc luctus nulla turpis, condimentum tincidunt libero euismod id. Donec scelerisque quis tellus ac tristique. Nulla id tempor leo. Suspendisse sit amet consequat est. Integer maximus pulvinar pellentesque. Curabitur eu nisi ut ligula facilisis porttitor. Pellentesque quis sagittis massa. Maecenas congue dictum tellus eget ullamcorper. Nulla euismod dapibus turpis, vitae eleifend tellus gravida a. Pellentesque faucibus consequat erat, id sagittis magna sagittis at. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam varius ligula id nisl commodo, quis dignissim leo tempus. Maecenas vel risus pharetra, efficitur enim at, blandit sem. Nunc dapibus malesuada nulla, et sodales lectus. Curabitur in lectus lacus.
     </string>
+    <string name="nodesc">noDesc</string>
 </resources>

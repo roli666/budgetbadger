@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.budgetbadger.adapters.MovieItemAdapter
@@ -23,7 +24,7 @@ class MovieListFragment : Fragment() {
         fun newInstance() = MovieListFragment()
     }
 
-    val applicationGraph: AppComponent = DaggerAppComponent.create()
+    private val applicationGraph: AppComponent = DaggerAppComponent.create()
     private lateinit var viewModel: MovieListSharedViewModel
     private lateinit var binding: ListFragmentBinding
 
@@ -47,40 +48,29 @@ class MovieListFragment : Fragment() {
     ): View? {
         applicationGraph.inject(this)
         binding = ListFragmentBinding.inflate(layoutInflater)
-
-        binding.movieList.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = createMovieAdapter()
-        }
-        binding.movieList.adapter
         viewModel = activity?.run {
             ViewModelProvider(this).get(MovieListSharedViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+
+        viewModel.movieList.observe(viewLifecycleOwner, Observer { movies ->
+            binding.movieList.adapter = createMovieAdapter(movies)
+        })
+
+        viewModel.movieList.value = repo.getMovies("captain")
+
+        binding.movieList.apply {
+            layoutManager = LinearLayoutManager(activity)
+        }
+
         return binding.root
     }
 
-    private fun createMovieAdapter(): MovieItemAdapter {
-        var movieAdapter = MovieItemAdapter(
-            repo.getMovies("captain")
-            /*listOf(
-                Movie(
-                    "Batman",
-                    "Batman and the very long description",
-                    BitmapHelper.makeEmptyColoredBitmap(300, 200, 0xffff0000),
-                    6.9f,
-                    100000
-                )
-            )*/
-        )
+    private fun createMovieAdapter(movies: List<Movie>): MovieItemAdapter {
+        var movieAdapter = MovieItemAdapter(movies)
         movieAdapter.onItemClick = { movie ->
             viewModel.select(movie)
             callback.onMovieSelected(movie)
         }
         return movieAdapter;
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
 }

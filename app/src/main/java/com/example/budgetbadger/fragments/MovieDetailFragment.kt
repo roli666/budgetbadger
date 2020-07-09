@@ -13,7 +13,7 @@ import com.example.budgetbadger.databinding.MovieDetailFragmentBinding
 import com.example.budgetbadger.viewmodels.MovieListSharedViewModel
 import dagger.android.support.DaggerFragment
 
-class MovieDetailFragment : DaggerFragment() {
+class MovieDetailFragment : Fragment() {
 
     companion object {
         fun newInstance() =

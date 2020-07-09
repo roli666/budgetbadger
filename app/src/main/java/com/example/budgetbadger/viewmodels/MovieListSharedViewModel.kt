@@ -7,6 +7,7 @@ import com.example.budgetbadger.entities.Movie
 
 class MovieListSharedViewModel : ViewModel() {
     val selected = MutableLiveData<Movie>()
+    val movieList = MutableLiveData<List<Movie>>()
 
     fun select(item: Movie) {
         selected.value = item
