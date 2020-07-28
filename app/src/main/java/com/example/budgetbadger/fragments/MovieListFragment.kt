@@ -48,9 +48,9 @@ class MovieListFragment : Fragment() {
     ): View? {
         applicationGraph.inject(this)
         binding = ListFragmentBinding.inflate(layoutInflater)
-        viewModel = activity?.run {
+        viewModel = requireActivity().run {
             ViewModelProvider(this).get(MovieListSharedViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        }
 
         viewModel.movieList.observe(viewLifecycleOwner, Observer { movies ->
             binding.movieList.adapter = createMovieAdapter(movies)

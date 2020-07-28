@@ -17,41 +17,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="1dp"
-            android:textColor="#000000"
+            android:textColor="@color/colorBlack"
             android:textSize="18sp"
-            tools:text="Some title" />
+            tools:text="@sample/sampleData.json/movie_titles/title" />
 
         <ImageView
             android:id="@+id/moviePoster"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:contentDescription="@string/nodesc"
-            android:padding="1dp"
-            android:textColor="#000000"
+            android:textColor="@color/colorBlack"
+            tools:ignore="ContentDescription"
             tools:srcCompat="@drawable/borat" />
 
         <TextView
             android:id="@+id/movieDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Some incredibly long descriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescription"
+            tools:text="@tools:sample/lorem/random"
             android:padding="1dp"
-            android:textColor="#000000" />
+            android:textColor="@color/colorBlack"
+            android:maxLines="3"
+            android:ellipsize="end" />
 
         <TextView
             android:id="@+id/movieRating"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="1dp"
-            tools:text="10/10"
-            android:textColor="#000000" />
+            tools:text="@sample/sampleData.json/movie_ratings/rating"
+            android:textColor="@color/colorBlack" />
 
         <TextView
             android:id="@+id/movieBudget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="1dp"
-            tools:text="1000000 $"
-            android:textColor="#000000" />
+            tools:text="@sample/sampleData.json/budget"
+            android:textColor="@color/colorBlack" />
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

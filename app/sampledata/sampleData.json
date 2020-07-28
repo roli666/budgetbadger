@@ -1,0 +1,25 @@
+{
+  "budget": "100000$",
+  "movie_ratings": [
+    {
+      "rating": "10/10"
+    },
+    {
+      "rating": "8/10"
+    },
+    {
+      "rating": "6.9/10"
+    }
+  ],
+  "movie_titles": [
+    {
+      "title": "Borat"
+    },
+    {
+      "title": "Captain America"
+    },
+    {
+      "title": "Shrek 5: The Unbelievable Transformation Into Hulk"
+    }
+  ]
+}

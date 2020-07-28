@@ -20,17 +20,7 @@ class MainActivity : AppCompatActivity(), MovieListFragment.OnMovieTapListener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        if (Intent.ACTION_SEARCH == intent.action) {
-            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
-                TODO("use query to get values")
-            }
-        }
         setContentView(binding.root)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onAttachFragment(fragment: Fragment) {
