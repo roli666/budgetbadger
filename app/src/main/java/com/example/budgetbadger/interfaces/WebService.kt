@@ -2,6 +2,7 @@ package com.example.budgetbadger.interfaces
 
 import com.example.budgetbadger.pojos.MovieDetail
 import com.example.budgetbadger.pojos.SearchResult
+import com.example.budgetbadger.pojos.SearchResultBase
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,7 +16,7 @@ interface WebService {
         @Query("query") queryString: String,
         @Query("page") page: Int,
         @Query("include_adult") adult: Boolean
-    ): Call<SearchResult>
+    ): Call<SearchResultBase>
 
     @GET("movie/{movie_id}")
     fun getMovieDetail(

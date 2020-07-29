@@ -6,38 +6,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.example.budgetbadger.viewmodels.MovieDetailViewModel
-import com.example.budgetbadger.R
-import com.example.budgetbadger.databinding.ListFragmentBinding
 import com.example.budgetbadger.databinding.MovieDetailFragmentBinding
-import com.example.budgetbadger.viewmodels.MovieListSharedViewModel
-import dagger.android.support.DaggerFragment
+import com.example.budgetbadger.repositories.MovieRepository
+import com.example.budgetbadger.services.MovieDetailViewModelFactory
+import com.example.budgetbadger.viewmodels.MovieDetailViewModel
+import javax.inject.Inject
 
-class MovieDetailFragment : Fragment() {
+class MovieDetailFragment(private val movieId: Int) : Fragment() {
 
     companion object {
-        fun newInstance() =
-            MovieDetailFragment()
+        fun newInstance(movieId: Int) =
+            MovieDetailFragment(movieId)
     }
 
-    private lateinit var viewModel: MovieListSharedViewModel
+    private lateinit var viewModel: MovieDetailViewModel
     private lateinit var binding: MovieDetailFragmentBinding
+
+    @Inject
+    lateinit var repo: MovieRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = MovieDetailFragmentBinding.inflate(layoutInflater)
-        viewModel = activity?.run {
-            ViewModelProvider(this).get(MovieListSharedViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
-        binding.movieDescription.text = viewModel.selected.value?.description
-        binding.movieTitle.text = viewModel.selected.value?.title
-        return binding.root
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+        viewModel = requireActivity().run {
+            ViewModelProvider(this, MovieDetailViewModelFactory(repo, movieId)).get(
+                MovieDetailViewModel::class.java
+            )
+        }
+
+        binding.movieDescription.text = viewModel.movie.value?.description
+        binding.movieTitle.text = viewModel.movie.value?.title
+
+        return binding.root
     }
 
 }

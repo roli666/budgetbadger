@@ -3,6 +3,7 @@ package com.example.budgetbadger.dagger
 import com.example.budgetbadger.application.BudgetBadgerApplication
 import com.example.budgetbadger.fragments.MovieDetailFragment
 import com.example.budgetbadger.fragments.MovieListFragment
+import com.example.budgetbadger.viewmodels.MovieListViewModel
 import dagger.Component
 import javax.inject.Singleton
 
@@ -17,4 +18,5 @@ import javax.inject.Singleton
 interface AppComponent {
     fun inject(app: BudgetBadgerApplication)
     fun inject(movieList: MovieListFragment)
+    fun inject(movieListVM: MovieListViewModel)
 }
