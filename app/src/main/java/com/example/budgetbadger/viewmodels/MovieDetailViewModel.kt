@@ -1,10 +1,13 @@
 package com.example.budgetbadger.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import com.example.budgetbadger.BuildConfig
 import com.example.budgetbadger.entities.Movie
 import com.example.budgetbadger.repositories.MovieRepository
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 class MovieDetailViewModel @Inject constructor(
@@ -12,11 +15,7 @@ class MovieDetailViewModel @Inject constructor(
     var movieId: Int
 ) : ViewModel() {
 
-    lateinit var movie: MutableLiveData<Movie>
-
-    init {
-        movie.apply {
-            value = movieRepository.getMovie(movieId, BuildConfig.API_KEY)
-        }
+    var movie = liveData(Dispatchers.IO) {
+        emit(movieRepository.getMovie(movieId))
     }
 }

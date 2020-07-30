@@ -11,17 +11,17 @@ import retrofit2.http.Query
 interface WebService {
 
     @GET("search/movie")
-    fun getMovies(
+    suspend fun getMovies(
         @Query("api_key") apiKey: String,
         @Query("query") queryString: String,
         @Query("page") page: Int,
         @Query("include_adult") adult: Boolean
-    ): Call<SearchResultBase>
+    ): SearchResultBase
 
     @GET("movie/{movie_id}")
-    fun getMovieDetail(
+    suspend fun getMovieDetail(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
-    ): Call<MovieDetail>
+    ): MovieDetail
 
 }

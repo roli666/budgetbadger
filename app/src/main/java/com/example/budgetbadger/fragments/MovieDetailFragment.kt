@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.budgetbadger.dagger.AppComponent
+import com.example.budgetbadger.dagger.DaggerAppComponent
 import com.example.budgetbadger.databinding.MovieDetailFragmentBinding
 import com.example.budgetbadger.repositories.MovieRepository
 import com.example.budgetbadger.services.MovieDetailViewModelFactory
@@ -21,6 +24,7 @@ class MovieDetailFragment(private val movieId: Int) : Fragment() {
 
     private lateinit var viewModel: MovieDetailViewModel
     private lateinit var binding: MovieDetailFragmentBinding
+    private val applicationGraph: AppComponent = DaggerAppComponent.create()
 
     @Inject
     lateinit var repo: MovieRepository
@@ -30,15 +34,17 @@ class MovieDetailFragment(private val movieId: Int) : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = MovieDetailFragmentBinding.inflate(layoutInflater)
-
+        applicationGraph.inject(this)
         viewModel = requireActivity().run {
             ViewModelProvider(this, MovieDetailViewModelFactory(repo, movieId)).get(
                 MovieDetailViewModel::class.java
             )
         }
 
-        binding.movieDescription.text = viewModel.movie.value?.description
-        binding.movieTitle.text = viewModel.movie.value?.title
+        viewModel.movie.observe(viewLifecycleOwner, Observer {
+            binding.movieDescription.text = it.description
+            binding.movieTitle.text = it.title
+        })
 
         return binding.root
     }

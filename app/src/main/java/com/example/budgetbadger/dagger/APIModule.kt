@@ -1,6 +1,8 @@
 package com.example.budgetbadger.dagger
 
 import com.example.budgetbadger.BuildConfig
+import com.example.budgetbadger.adapters.DateAdapter
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -11,6 +13,10 @@ import javax.inject.Singleton
 
 @Module
 class APIModule {
+
+    private fun moshi(): Moshi = Moshi.Builder()
+        .add(DateAdapter())
+        .build()
 
     @Provides
     fun provideOKHttpClient(): OkHttpClient {
@@ -25,7 +31,7 @@ class APIModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi()))
             .client(okHttpClient)
             .build()
     }

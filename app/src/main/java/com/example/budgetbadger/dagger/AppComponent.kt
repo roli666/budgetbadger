@@ -18,5 +18,6 @@ import javax.inject.Singleton
 interface AppComponent {
     fun inject(app: BudgetBadgerApplication)
     fun inject(movieList: MovieListFragment)
+    fun inject(movieDetail: MovieDetailFragment)
     fun inject(movieListVM: MovieListViewModel)
 }
