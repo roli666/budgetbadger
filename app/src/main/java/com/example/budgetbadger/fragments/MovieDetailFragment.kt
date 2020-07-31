@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.example.budgetbadger.BuildConfig
 import com.example.budgetbadger.dagger.AppComponent
 import com.example.budgetbadger.dagger.DaggerAppComponent
 import com.example.budgetbadger.databinding.MovieDetailFragmentBinding
@@ -16,11 +18,6 @@ import com.example.budgetbadger.viewmodels.MovieDetailViewModel
 import javax.inject.Inject
 
 class MovieDetailFragment(private val movieId: Int) : Fragment() {
-
-    companion object {
-        fun newInstance(movieId: Int) =
-            MovieDetailFragment(movieId)
-    }
 
     private lateinit var viewModel: MovieDetailViewModel
     private lateinit var binding: MovieDetailFragmentBinding
@@ -37,6 +34,7 @@ class MovieDetailFragment(private val movieId: Int) : Fragment() {
         applicationGraph.inject(this)
         viewModel = requireActivity().run {
             ViewModelProvider(this, MovieDetailViewModelFactory(repo, movieId)).get(
+                movieId.toString(),
                 MovieDetailViewModel::class.java
             )
         }
@@ -44,6 +42,8 @@ class MovieDetailFragment(private val movieId: Int) : Fragment() {
         viewModel.movie.observe(viewLifecycleOwner, Observer {
             binding.movieDescription.text = it.description
             binding.movieTitle.text = it.title
+            Glide.with(this).load(BuildConfig.IMAGE_BASE_URL + it.poster_path)
+                .into(binding.movieImage)
         })
 
         return binding.root

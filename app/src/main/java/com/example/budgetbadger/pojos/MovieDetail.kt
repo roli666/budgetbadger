@@ -11,10 +11,10 @@ data class MovieDetail(
     val overview: String,
     val vote_average: Float,
     val adult: Boolean,
-    val poster_path: String,
+    val poster_path: String?,
     val release_date: Date
 ) {
-    fun toMovie(image: Bitmap?): Movie {
-        return Movie(id, title, overview, image, vote_average, budget)
+    fun toMovie(): Movie {
+        return Movie(id, title, overview, poster_path, vote_average, budget)
     }
 }

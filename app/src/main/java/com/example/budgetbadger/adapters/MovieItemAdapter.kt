@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.budgetbadger.BuildConfig
 import com.example.budgetbadger.R
 import com.example.budgetbadger.entities.Movie
 import kotlinx.android.synthetic.main.empty_view_holder.view.*
@@ -57,7 +59,6 @@ class MovieItemAdapter(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        val currentItem = movies[position]
         when (holder) {
             is EmptyViewHolder -> {
                 with(holder)
@@ -68,17 +69,19 @@ class MovieItemAdapter(
             is MovieItemViewHolder -> {
                 with(holder)
                 {
-                    mTitle.text = currentItem.title
-                    mBudget.text = "${currentItem.budget} $"
-                    mRating.text = "${currentItem.rating}\\10"
-                    mPoster.setImageBitmap(currentItem.poster)
-                    mDescription.text = currentItem.description
+                    mTitle.text = movies[position].title
+                    mBudget.text = "${movies[position].budget} $"
+                    mRating.text = "${movies[position].rating}\\10"
+                    Glide.with(holder.itemView)
+                        .load(BuildConfig.IMAGE_BASE_URL + movies[position].poster_path)
+                        .into(mPoster)
+                    mDescription.text = movies[position].description
                 }
             }
         }
     }
 
-    override fun getItemCount(): Int = movies.size
+    override fun getItemCount(): Int = if (movies.isEmpty()) 1 else movies.size
 
     var onItemClick: ((Movie) -> Unit)? = null
 
