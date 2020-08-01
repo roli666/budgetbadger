@@ -56,7 +56,6 @@ class MovieItemAdapter(
         )
     }
 
-
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         when (holder) {
@@ -84,5 +83,4 @@ class MovieItemAdapter(
     override fun getItemCount(): Int = if (movies.isEmpty()) 1 else movies.size
 
     var onItemClick: ((Movie) -> Unit)? = null
-
 }

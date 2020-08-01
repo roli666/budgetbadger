@@ -1,8 +1,7 @@
 package com.example.budgetbadger.pojos
 
-import android.graphics.Bitmap
 import com.example.budgetbadger.entities.Movie
-import java.util.*
+import java.util.Date
 
 data class MovieDetail(
     val id: Int,

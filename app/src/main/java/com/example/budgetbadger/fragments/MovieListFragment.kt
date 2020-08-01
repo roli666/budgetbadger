@@ -16,7 +16,11 @@ import com.example.budgetbadger.dagger.DaggerAppComponent
 import com.example.budgetbadger.databinding.ListFragmentBinding
 import com.example.budgetbadger.entities.Movie
 import com.example.budgetbadger.viewmodels.MovieListViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MovieListFragment : Fragment() {
 
@@ -76,7 +80,7 @@ class MovieListFragment : Fragment() {
                     if (!newText.isNullOrEmpty()) {
                         searchJob?.cancel()
                         searchJob = CoroutineScope(Dispatchers.Main).launch {
-                            newText?.let {
+                            newText.let {
                                 delay(debouncePeriod)
                                 fetchMovies(newText)
                             }
@@ -93,7 +97,6 @@ class MovieListFragment : Fragment() {
                 }
                 return false
             }
-
         })
 
         return binding.root
@@ -105,6 +108,6 @@ class MovieListFragment : Fragment() {
             viewModel.select(movie)
             callback.onMovieSelected(movie)
         }
-        return movieAdapter;
+        return movieAdapter
     }
 }

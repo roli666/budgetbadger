@@ -1,9 +1,7 @@
 package com.example.budgetbadger.interfaces
 
 import com.example.budgetbadger.pojos.MovieDetail
-import com.example.budgetbadger.pojos.SearchResult
 import com.example.budgetbadger.pojos.SearchResultBase
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -23,5 +21,4 @@ interface WebService {
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
     ): MovieDetail
-
 }

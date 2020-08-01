@@ -1,6 +1,8 @@
 package com.example.budgetbadger.viewmodels
 
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.budgetbadger.dagger.AppComponent
 import com.example.budgetbadger.dagger.DaggerAppComponent
 import com.example.budgetbadger.entities.Movie

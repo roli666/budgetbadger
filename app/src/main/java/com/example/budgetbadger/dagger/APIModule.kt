@@ -35,5 +35,4 @@ class APIModule {
             .client(okHttpClient)
             .build()
     }
-
 }

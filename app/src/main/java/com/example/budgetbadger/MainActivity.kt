@@ -1,9 +1,9 @@
 package com.example.budgetbadger
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
 import com.example.budgetbadger.databinding.ActivityMainBinding
@@ -20,12 +20,14 @@ class MainActivity : AppCompatActivity(), MovieListFragment.OnMovieTapListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
+
     override fun onAttachFragment(fragment: Fragment) {
         super.onAttachFragment(fragment)
         if (fragment is MovieListFragment) {
             fragment.setOnMovieSelectedListener(this)
         }
     }
+
     override fun onMovieSelected(movie: Movie) {
         val newFragment = MovieDetailFragment(movie.id)
         val transaction = supportFragmentManager.beginTransaction()

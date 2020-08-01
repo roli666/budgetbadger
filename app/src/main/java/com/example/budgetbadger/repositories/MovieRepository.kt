@@ -1,9 +1,9 @@
 package com.example.budgetbadger.repositories
 
-import com.example.budgetbadger.entities.Movie
-import com.example.budgetbadger.interfaces.WebService
 import com.example.budgetbadger.BuildConfig
+import com.example.budgetbadger.entities.Movie
 import com.example.budgetbadger.interfaces.IMovieRepository
+import com.example.budgetbadger.interfaces.WebService
 import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton

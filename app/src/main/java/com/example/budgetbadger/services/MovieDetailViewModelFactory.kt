@@ -14,5 +14,4 @@ class MovieDetailViewModelFactory @Inject constructor(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
         MovieDetailViewModel(movieRepository, movieId) as T
-
 }
