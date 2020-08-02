@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.budgetbadger.dagger.AppComponent
 import com.example.budgetbadger.dagger.DaggerAppComponent
-import com.example.budgetbadger.entities.Movie
-import com.example.budgetbadger.repositories.MovieRepository
+import com.example.budgetbadger.interfaces.MovieRepository
+import com.example.budgetbadger.model.Movie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -3,6 +3,8 @@ package com.example.budgetbadger.dagger
 import com.example.budgetbadger.application.BudgetBadgerApplication
 import com.example.budgetbadger.fragments.MovieDetailFragment
 import com.example.budgetbadger.fragments.MovieListFragment
+import com.example.budgetbadger.services.MovieDetailViewModelFactory
+import com.example.budgetbadger.viewmodels.MovieDetailViewModel_Factory
 import com.example.budgetbadger.viewmodels.MovieListViewModel
 import dagger.Component
 import javax.inject.Singleton
@@ -10,8 +12,6 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
-        AppModule::class,
-        GlideModule::class,
         APIModule::class
     ]
 )
@@ -20,4 +20,5 @@ interface AppComponent {
     fun inject(movieList: MovieListFragment)
     fun inject(movieDetail: MovieDetailFragment)
     fun inject(movieListVM: MovieListViewModel)
+    fun inject(movieDetailFactory: MovieDetailViewModelFactory)
 }

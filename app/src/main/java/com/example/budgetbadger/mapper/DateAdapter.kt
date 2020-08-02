@@ -1,4 +1,4 @@
-package com.example.budgetbadger.adapters
+package com.example.budgetbadger.mapper
 
 import android.annotation.SuppressLint
 import com.squareup.moshi.FromJson

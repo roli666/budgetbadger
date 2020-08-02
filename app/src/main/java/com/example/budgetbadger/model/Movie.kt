@@ -1,4 +1,4 @@
-package com.example.budgetbadger.entities
+package com.example.budgetbadger.model
 
 data class Movie(
     val id: Int,

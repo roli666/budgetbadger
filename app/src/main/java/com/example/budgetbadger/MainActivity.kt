@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
 import com.example.budgetbadger.databinding.ActivityMainBinding
-import com.example.budgetbadger.entities.Movie
+import com.example.budgetbadger.model.Movie
 import com.example.budgetbadger.fragments.MovieDetailFragment
 import com.example.budgetbadger.fragments.MovieListFragment
 

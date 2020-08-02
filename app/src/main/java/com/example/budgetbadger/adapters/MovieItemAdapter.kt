@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.budgetbadger.BuildConfig
 import com.example.budgetbadger.R
-import com.example.budgetbadger.entities.Movie
+import com.example.budgetbadger.model.Movie
 import kotlinx.android.synthetic.main.empty_view_holder.view.*
 import kotlinx.android.synthetic.main.list_row.view.*
 

@@ -1,6 +1,5 @@
-package com.example.budgetbadger.pojos
+package com.example.budgetbadger.model
 
-import com.example.budgetbadger.entities.Movie
 import java.util.Date
 
 data class MovieDetail(

@@ -2,7 +2,8 @@ package com.example.budgetbadger.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.example.budgetbadger.repositories.MovieRepository
+import com.example.budgetbadger.interfaces.MovieRepository
+
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 

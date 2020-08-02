@@ -1,17 +1,17 @@
-package com.example.budgetbadger.repositories
+package com.example.budgetbadger.repository
 
 import com.example.budgetbadger.BuildConfig
-import com.example.budgetbadger.entities.Movie
-import com.example.budgetbadger.interfaces.IMovieRepository
+import com.example.budgetbadger.interfaces.MovieRepository
 import com.example.budgetbadger.interfaces.WebService
+import com.example.budgetbadger.model.Movie
 import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MovieRepository @Inject constructor(
+class MovieRepositoryImpl @Inject constructor(
     retrofit: Retrofit
-) : IMovieRepository {
+) : MovieRepository {
     private val apiService: WebService = retrofit.create(WebService::class.java)
 
     override suspend fun getMovies(queryString: String, page: Int, adult: Boolean): List<Movie> =

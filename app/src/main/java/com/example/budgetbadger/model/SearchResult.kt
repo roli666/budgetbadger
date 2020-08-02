@@ -1,4 +1,4 @@
-package com.example.budgetbadger.pojos
+package com.example.budgetbadger.model
 
 data class SearchResult(
     val id: Int,

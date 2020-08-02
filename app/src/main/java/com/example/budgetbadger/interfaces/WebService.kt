@@ -1,7 +1,7 @@
 package com.example.budgetbadger.interfaces
 
-import com.example.budgetbadger.pojos.MovieDetail
-import com.example.budgetbadger.pojos.SearchResultBase
+import com.example.budgetbadger.model.MovieDetail
+import com.example.budgetbadger.model.SearchResultBase
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

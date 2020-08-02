@@ -14,7 +14,7 @@ import com.example.budgetbadger.adapters.MovieItemAdapter
 import com.example.budgetbadger.dagger.AppComponent
 import com.example.budgetbadger.dagger.DaggerAppComponent
 import com.example.budgetbadger.databinding.ListFragmentBinding
-import com.example.budgetbadger.entities.Movie
+import com.example.budgetbadger.model.Movie
 import com.example.budgetbadger.viewmodels.MovieListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
