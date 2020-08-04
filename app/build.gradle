@@ -15,7 +15,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     apply plugin: 'kotlin-kapt'
+    apply plugin: "androidx.navigation.safeargs.kotlin"
+
     buildTypes {
         release {
             buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
@@ -38,6 +41,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 }
 
 dependencies {
@@ -59,6 +65,8 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.28.1'
     implementation 'com.squareup.okhttp3:okhttp:4.8.0'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

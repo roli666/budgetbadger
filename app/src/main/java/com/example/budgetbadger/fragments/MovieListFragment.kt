@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.budgetbadger.MainActivity
 import com.example.budgetbadger.R
 import com.example.budgetbadger.adapters.MovieItemAdapter
 import com.example.budgetbadger.dagger.AppComponent
@@ -29,10 +30,6 @@ class MovieListFragment : Fragment() {
     private lateinit var binding: ListFragmentBinding
     private lateinit var callback: OnMovieTapListener
 
-    fun setOnMovieSelectedListener(callback: OnMovieTapListener) {
-        this.callback = callback
-    }
-
     interface OnMovieTapListener {
         fun onMovieSelected(movie: Movie)
     }
@@ -47,6 +44,8 @@ class MovieListFragment : Fragment() {
         viewModel = requireActivity().run {
             ViewModelProvider(this).get(MovieListViewModel::class.java)
         }
+
+        callback = activity as MainActivity
 
         viewModel.movieList.observe(viewLifecycleOwner, Observer { movies ->
             binding.movieList.adapter = createMovieAdapter(
