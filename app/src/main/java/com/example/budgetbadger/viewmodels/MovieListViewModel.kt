@@ -14,13 +14,25 @@ class MovieListViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     private val selected = MutableLiveData<Movie>()
+    private var page: Int = 0
+    private var lastQuery: String = ""
 
-    val movieList = MutableLiveData<List<Movie>>()
+    val movieList = MutableLiveData<MutableList<Movie>>()
 
-    fun fetchMovies(query: String) {
+    fun fetchMovies(query: String, page: Int) {
+        this.page = page
+        lastQuery = query
         viewModelScope.launch(Dispatchers.IO) {
-            val movies = movieRepo.getMovies(query)
-            movieList.postValue(movies)
+            val movies = movieRepo.getMovies(query, page)
+            movieList.postValue(movies.toMutableList())
+        }
+    }
+
+    fun loadMore() {
+        page++
+        viewModelScope.launch(Dispatchers.IO) {
+            val movies = movieRepo.getMovies(lastQuery, page)
+            movieList.value?.addAll(movies)
         }
     }
 

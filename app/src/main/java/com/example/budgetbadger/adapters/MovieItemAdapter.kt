@@ -71,9 +71,10 @@ class MovieItemAdapter(
                     mTitle.text = movies[position].title
                     mBudget.text = "${movies[position].budget} $"
                     mRating.text = "${movies[position].rating}\\10"
-                    Glide.with(holder.itemView)
-                        .load(BuildConfig.IMAGE_BASE_URL + movies[position].poster_path)
-                        .into(mPoster)
+                    if (!movies[position].poster_path.isNullOrEmpty())
+                        Glide.with(holder.itemView)
+                            .load(BuildConfig.IMAGE_BASE_URL + movies[position].poster_path)
+                            .into(mPoster)
                     mDescription.text = movies[position].description
                 }
             }

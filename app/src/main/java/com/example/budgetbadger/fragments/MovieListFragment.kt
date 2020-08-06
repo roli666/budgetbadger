@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.budgetbadger.MainActivity
 import com.example.budgetbadger.R
 import com.example.budgetbadger.adapters.MovieItemAdapter
@@ -53,6 +53,21 @@ class MovieListFragment : Fragment() {
             adapter = createMovieAdapter(listOf(), getString(R.string.movie_list_text_on_empty))
         }
 
+        binding.movieList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                with(binding.movieList.layoutManager as LinearLayoutManager)
+                {
+                    if (this.findLastCompletelyVisibleItemPosition() == viewModel.movieList.value?.size?.minus(
+                            2
+                        )
+                    ) {
+                        viewModel.loadMore()
+                    }
+                }
+            }
+        })
+
         binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             private var debouncePeriod: Long = 500
@@ -61,7 +76,7 @@ class MovieListFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.run {
                     if (!query.isNullOrEmpty()) {
-                        fetchMovies(query)
+                        fetchMovies(query, 1)
                         return true
                     }
                 }
@@ -75,11 +90,12 @@ class MovieListFragment : Fragment() {
                         searchJob = CoroutineScope(Dispatchers.Main).launch {
                             newText.let {
                                 delay(debouncePeriod)
-                                fetchMovies(newText)
+                                fetchMovies(newText, 1)
                             }
                         }
                         return true
                     } else {
+                        searchJob?.cancel()
                         binding.movieList.apply {
                             adapter = createMovieAdapter(
                                 listOf(),
