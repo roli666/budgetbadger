@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.budgetbadger.MainActivity
 import com.example.budgetbadger.R
 import com.example.budgetbadger.adapters.MovieItemAdapter
-import com.example.budgetbadger.dagger.AppComponent
-import com.example.budgetbadger.dagger.DaggerAppComponent
 import com.example.budgetbadger.databinding.ListFragmentBinding
 import com.example.budgetbadger.model.Movie
 import com.example.budgetbadger.viewmodels.MovieListViewModel
@@ -25,8 +24,7 @@ import kotlinx.coroutines.launch
 
 class MovieListFragment : Fragment() {
 
-    private val applicationGraph: AppComponent = DaggerAppComponent.create()
-    private lateinit var viewModel: MovieListViewModel
+    private val viewModel: MovieListViewModel by activityViewModels()
     private lateinit var binding: ListFragmentBinding
     private lateinit var callback: OnMovieTapListener
 
@@ -39,11 +37,7 @@ class MovieListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        applicationGraph.inject(this)
         binding = ListFragmentBinding.inflate(layoutInflater)
-        viewModel = requireActivity().run {
-            ViewModelProvider(this).get(MovieListViewModel::class.java)
-        }
 
         callback = activity as MainActivity
 

@@ -7,6 +7,8 @@ import com.example.budgetbadger.repository.MovieRepositoryImpl
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -14,6 +16,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
+@InstallIn(ApplicationComponent::class)
 class APIModule {
 
     private fun moshi(): Moshi = Moshi.Builder()
@@ -29,12 +32,13 @@ class APIModule {
     }
 
     @Provides
+    @Singleton
     fun provideMovieRepository(retrofit: Retrofit): MovieRepository {
         return MovieRepositoryImpl(retrofit)
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)

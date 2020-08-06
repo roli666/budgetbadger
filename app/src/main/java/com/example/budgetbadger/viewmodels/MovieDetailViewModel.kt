@@ -1,18 +1,22 @@
 package com.example.budgetbadger.viewmodels
 
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.example.budgetbadger.interfaces.MovieRepository
+import com.example.budgetbadger.model.Movie
+import kotlinx.coroutines.launch
 
-import kotlinx.coroutines.Dispatchers
-import javax.inject.Inject
-
-class MovieDetailViewModel @Inject constructor(
-    var movieRepository: MovieRepository,
-    var movieId: Int
+class MovieDetailViewModel @ViewModelInject constructor(
+    private var movieRepository: MovieRepository
 ) : ViewModel() {
 
-    var movie = liveData(Dispatchers.IO) {
-        emit(movieRepository.getMovie(movieId))
+    var movie: MutableLiveData<Movie> = MutableLiveData()
+
+    fun fetchMovie(movieId: Int) {
+        viewModelScope.launch {
+            movie.postValue(movieRepository.getMovie(movieId))
+        }
     }
 }

@@ -4,14 +4,14 @@ import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import com.example.budgetbadger.databinding.ActivityMainBinding
 import com.example.budgetbadger.model.Movie
 import com.example.budgetbadger.fragments.MovieListFragment
 import com.example.budgetbadger.fragments.MovieListFragmentDirections
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), MovieListFragment.OnMovieTapListener {
 
     private lateinit var binding: ActivityMainBinding

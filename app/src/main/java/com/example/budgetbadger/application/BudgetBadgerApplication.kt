@@ -1,19 +1,7 @@
 package com.example.budgetbadger.application
 
 import android.app.Application
-import com.example.budgetbadger.dagger.AppComponent
-import com.example.budgetbadger.dagger.DaggerAppComponent
+import dagger.hilt.android.HiltAndroidApp
 
-class BudgetBadgerApplication : Application() {
-
-    private val component: AppComponent by lazy {
-        DaggerAppComponent
-            .builder()
-            .build()
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        component.inject(this)
-    }
-}
+@HiltAndroidApp
+class BudgetBadgerApplication : Application()

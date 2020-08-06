@@ -1,20 +1,19 @@
 package com.example.budgetbadger.viewmodels
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.budgetbadger.dagger.AppComponent
-import com.example.budgetbadger.dagger.DaggerAppComponent
 import com.example.budgetbadger.interfaces.MovieRepository
 import com.example.budgetbadger.model.Movie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class MovieListViewModel : ViewModel() {
+class MovieListViewModel @ViewModelInject constructor(
+    private var movieRepo: MovieRepository
+) : ViewModel() {
 
     private val selected = MutableLiveData<Movie>()
-    private val applicationGraph: AppComponent = DaggerAppComponent.create()
 
     val movieList = MutableLiveData<List<Movie>>()
 
@@ -24,14 +23,6 @@ class MovieListViewModel : ViewModel() {
             movieList.postValue(movies)
         }
     }
-
-    @Inject
-    lateinit var movieRepo: MovieRepository
-
-    init {
-        applicationGraph.inject(this)
-    }
-
 
     fun select(item: Movie) {
         selected.value = item
