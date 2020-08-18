@@ -33,6 +33,7 @@ class MovieListViewModel @ViewModelInject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val movies = movieRepo.getMovies(lastQuery, page)
             movieList.value?.addAll(movies)
+            movieList.postValue(movieList.value)
         }
     }
 

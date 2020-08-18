@@ -1,8 +1,8 @@
 package com.example.budgetbadger.dagger
 
 import com.example.budgetbadger.BuildConfig
-import com.example.budgetbadger.mapper.DateAdapter
 import com.example.budgetbadger.interfaces.MovieRepository
+import com.example.budgetbadger.mapper.DateAdapter
 import com.example.budgetbadger.repository.MovieRepositoryImpl
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -23,11 +23,13 @@ class APIModule {
         .add(DateAdapter())
         .build()
 
+    private val timeOut: Long = 1200
+
     @Provides
     fun provideOKHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-            .readTimeout(1200, TimeUnit.SECONDS)
-            .connectTimeout(1200, TimeUnit.SECONDS)
+            .readTimeout(timeOut, TimeUnit.SECONDS)
+            .connectTimeout(timeOut, TimeUnit.SECONDS)
             .build()
     }
 

@@ -13,7 +13,7 @@ class DateAdapter {
     fun toJson(value: Date): String = FORMATTER.format(value)
 
     @FromJson
-    fun fromJson(value: String): Date = FORMATTER.parse(value)
+    fun fromJson(value: String): Date? = FORMATTER.parse(value)
 
     companion object {
         @SuppressLint("ConstantLocale")

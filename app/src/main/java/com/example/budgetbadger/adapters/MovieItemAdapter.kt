@@ -11,14 +11,16 @@ import com.bumptech.glide.Glide
 import com.example.budgetbadger.BuildConfig
 import com.example.budgetbadger.R
 import com.example.budgetbadger.model.Movie
-import kotlinx.android.synthetic.main.empty_view_holder.view.*
-import kotlinx.android.synthetic.main.list_row.view.*
+import kotlinx.android.synthetic.main.item_movie.view.*
+import kotlinx.android.synthetic.main.view_empty_view_holder.view.*
 
 class MovieItemAdapter(
-    private val movies: List<Movie>,
-    private val textWhenEmpty: String
+    val movies: List<Movie>,
+    var textWhenEmpty: String
 ) :
     RecyclerView.Adapter<MovieItemAdapter.BaseViewHolder>() {
+
+    abstract class BaseViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     inner class MovieItemViewHolder(view: View) :
         BaseViewHolder(view) {
@@ -35,24 +37,22 @@ class MovieItemAdapter(
         }
     }
 
-    inner class EmptyViewHolder(view: View) : BaseViewHolder(view) {
+    class EmptyViewHolder(view: View) : BaseViewHolder(view) {
         val textToDisplay: TextView = view.textToDisplay
     }
-
-    abstract inner class BaseViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         if (movies.isEmpty()) {
             return EmptyViewHolder(
                 LayoutInflater
                     .from(parent.context)
-                    .inflate(R.layout.empty_view_holder, parent, false)
+                    .inflate(R.layout.view_empty_view_holder, parent, false)
             )
         }
         return MovieItemViewHolder(
             LayoutInflater
                 .from(parent.context)
-                .inflate(R.layout.list_row, parent, false)
+                .inflate(R.layout.item_movie, parent, false)
         )
     }
 
@@ -60,21 +60,20 @@ class MovieItemAdapter(
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         when (holder) {
             is EmptyViewHolder -> {
-                with(holder)
-                {
+                with(holder) {
                     textToDisplay.text = textWhenEmpty
                 }
             }
             is MovieItemViewHolder -> {
-                with(holder)
-                {
+                with(holder) {
                     mTitle.text = movies[position].title
                     mBudget.text = "${movies[position].budget} $"
                     mRating.text = "${movies[position].rating}\\10"
-                    if (!movies[position].poster_path.isNullOrEmpty())
+                    if (!movies[position].poster_path.isNullOrEmpty()) {
                         Glide.with(holder.itemView)
                             .load(BuildConfig.IMAGE_BASE_URL + movies[position].poster_path)
                             .into(mPoster)
+                    }
                     mDescription.text = movies[position].description
                 }
             }

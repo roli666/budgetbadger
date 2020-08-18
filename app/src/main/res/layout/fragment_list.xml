@@ -25,7 +25,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_bar"
-        tools:listitem="@layout/list_row"
+        tools:listitem="@layout/item_movie"
         tools:showIn="@layout/activity_main" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

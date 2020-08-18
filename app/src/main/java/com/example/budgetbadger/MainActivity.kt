@@ -6,9 +6,9 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.example.budgetbadger.databinding.ActivityMainBinding
-import com.example.budgetbadger.model.Movie
 import com.example.budgetbadger.fragments.MovieListFragment
 import com.example.budgetbadger.fragments.MovieListFragmentDirections
+import com.example.budgetbadger.model.Movie
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

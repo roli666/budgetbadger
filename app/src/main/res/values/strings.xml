@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">BudgetBadger</string>
-    <string name="search_hint">ex.: Borat</string>
     <string name="movie_list_text_on_empty">Type text into the search bar to find some movies!</string>
     <string name="movie_list_no_result_text">No results for query:</string>
 </resources>
