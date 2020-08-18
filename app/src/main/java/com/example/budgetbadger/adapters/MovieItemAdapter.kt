@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.item_movie.view.*
 import kotlinx.android.synthetic.main.view_empty_view_holder.view.*
 
 class MovieItemAdapter(
-    val movies: List<Movie>,
+    var movies: List<Movie>,
     var textWhenEmpty: String
 ) :
     RecyclerView.Adapter<MovieItemAdapter.BaseViewHolder>() {

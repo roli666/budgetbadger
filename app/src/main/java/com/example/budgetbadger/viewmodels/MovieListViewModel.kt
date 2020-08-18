@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MovieListViewModel @ViewModelInject constructor(
-    private var movieRepo: MovieRepository
+    private var movieRepo: MovieRepository,
 ) : ViewModel() {
 
     private val selected = MutableLiveData<Movie>()
@@ -18,6 +18,10 @@ class MovieListViewModel @ViewModelInject constructor(
     private var lastQuery: String = ""
 
     val movieList = MutableLiveData<MutableList<Movie>>()
+
+    init {
+        movieList.value = mutableListOf()
+    }
 
     fun fetchMovies(query: String, page: Int) {
         this.page = page

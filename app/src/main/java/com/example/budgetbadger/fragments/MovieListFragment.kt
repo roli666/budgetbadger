@@ -41,13 +41,17 @@ class MovieListFragment : Fragment() {
         callback = activity as MainActivity
 
         setMovieAdapter(
-            listOf(), getString(R.string.movie_list_text_on_empty)
+            viewModel.movieList.value!!, getString(R.string.movie_list_text_on_empty)
         )
 
         viewModel.movieList.observe(viewLifecycleOwner, { movies ->
             if (movies.isEmpty()) {
-                movieAdapter.textWhenEmpty =
-                    getString(R.string.movie_list_no_result_text) + binding.searchBar.query
+                if (!binding.searchBar.query.isNullOrEmpty()) {
+                    movieAdapter.textWhenEmpty =
+                        getString(R.string.movie_list_no_result_text) + binding.searchBar.query
+                }
+            } else {
+                movieAdapter.movies = movies
                 movieAdapter.notifyDataSetChanged()
             }
         })
@@ -66,7 +70,6 @@ class MovieListFragment : Fragment() {
                         )
                     ) {
                         viewModel.loadMore()
-                        movieAdapter.notifyDataSetChanged()
                     }
                 }
             }
@@ -96,13 +99,11 @@ class MovieListFragment : Fragment() {
                                 delay(debouncePeriod)
                                 fetchMovies(newText, 1)
                             }
-                            movieAdapter.notifyDataSetChanged()
                         }
                         return true
                     } else {
                         searchJob?.cancel()
                         movieAdapter.textWhenEmpty = getString(R.string.movie_list_text_on_empty)
-                        movieAdapter.notifyDataSetChanged()
                     }
                 }
                 return false
@@ -112,7 +113,7 @@ class MovieListFragment : Fragment() {
         return binding.root
     }
 
-    private fun setMovieAdapter(movies: List<Movie>, textOnEmptyList: String) {
+    private fun setMovieAdapter(movies: MutableList<Movie>, textOnEmptyList: String) {
         movieAdapter = MovieItemAdapter(movies, textOnEmptyList)
         movieAdapter.onItemClick = { movie ->
             viewModel.select(movie)
