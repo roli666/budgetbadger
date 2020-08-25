@@ -6,24 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.budgetbadger.BuildConfig
 import com.example.budgetbadger.R
 import com.example.budgetbadger.model.Movie
 import kotlinx.android.synthetic.main.item_movie.view.*
-import kotlinx.android.synthetic.main.view_empty_view_holder.view.*
 
 class MovieItemAdapter(
-    var movies: List<Movie>,
-    var textWhenEmpty: String
+    var movies: List<Movie>
 ) :
-    RecyclerView.Adapter<MovieItemAdapter.BaseViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    abstract class BaseViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
-    inner class MovieItemViewHolder(view: View) :
-        BaseViewHolder(view) {
+    inner class MovieItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val mTitle: TextView = view.movieTitle
         val mPoster: ImageView = view.moviePoster
         val mDescription: TextView = view.movieDescription
@@ -37,18 +33,7 @@ class MovieItemAdapter(
         }
     }
 
-    class EmptyViewHolder(view: View) : BaseViewHolder(view) {
-        val textToDisplay: TextView = view.textToDisplay
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        if (movies.isEmpty()) {
-            return EmptyViewHolder(
-                LayoutInflater
-                    .from(parent.context)
-                    .inflate(R.layout.view_empty_view_holder, parent, false)
-            )
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MovieItemViewHolder(
             LayoutInflater
                 .from(parent.context)
@@ -56,31 +41,40 @@ class MovieItemAdapter(
         )
     }
 
+    fun notifyChanges(oldList: List<Movie>, newList: List<Movie>) {
+        val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldList[oldItemPosition].id == newList[newItemPosition].id
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldList[oldItemPosition] == newList[newItemPosition]
+            }
+
+            override fun getOldListSize() = oldList.size
+
+            override fun getNewListSize() = newList.size
+        })
+        diff.dispatchUpdatesTo(this)
+    }
+
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        when (holder) {
-            is EmptyViewHolder -> {
-                with(holder) {
-                    textToDisplay.text = textWhenEmpty
-                }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        with(holder as MovieItemViewHolder) {
+            mTitle.text = movies[position].title
+            mBudget.text = "${movies[position].budget} $"
+            mRating.text = "${movies[position].rating}\\10"
+            if (!movies[position].poster_path.isNullOrEmpty()) {
+                Glide.with(holder.itemView)
+                    .load(BuildConfig.IMAGE_BASE_URL + movies[position].poster_path)
+                    .into(mPoster)
             }
-            is MovieItemViewHolder -> {
-                with(holder) {
-                    mTitle.text = movies[position].title
-                    mBudget.text = "${movies[position].budget} $"
-                    mRating.text = "${movies[position].rating}\\10"
-                    if (!movies[position].poster_path.isNullOrEmpty()) {
-                        Glide.with(holder.itemView)
-                            .load(BuildConfig.IMAGE_BASE_URL + movies[position].poster_path)
-                            .into(mPoster)
-                    }
-                    mDescription.text = movies[position].description
-                }
-            }
+            mDescription.text = movies[position].description
         }
     }
 
-    override fun getItemCount(): Int = if (movies.isEmpty()) 1 else movies.size
+    override fun getItemCount(): Int = movies.size
 
     var onItemClick: ((Movie) -> Unit)? = null
 }

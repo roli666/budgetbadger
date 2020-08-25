@@ -17,10 +17,11 @@ class MovieListViewModel @ViewModelInject constructor(
     private var page: Int = 0
     private var lastQuery: String = ""
 
-    val movieList = MutableLiveData<MutableList<Movie>>()
+    val resultText = MutableLiveData<String>()
+    val movieList = MutableLiveData<List<Movie>>()
 
     init {
-        movieList.value = mutableListOf()
+        movieList.postValue(listOf())
     }
 
     fun fetchMovies(query: String, page: Int) {
@@ -28,7 +29,7 @@ class MovieListViewModel @ViewModelInject constructor(
         lastQuery = query
         viewModelScope.launch(Dispatchers.IO) {
             val movies = movieRepo.getMovies(query, page)
-            movieList.postValue(movies.toMutableList())
+            movieList.postValue(movies)
         }
     }
 
@@ -36,8 +37,8 @@ class MovieListViewModel @ViewModelInject constructor(
         page++
         viewModelScope.launch(Dispatchers.IO) {
             val movies = movieRepo.getMovies(lastQuery, page)
-            movieList.value?.addAll(movies)
-            movieList.postValue(movieList.value)
+            val oldMovies = movieList.value ?: listOf()
+            movieList.postValue(movies.union(oldMovies).toList())
         }
     }
 

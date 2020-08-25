@@ -28,4 +28,21 @@
         tools:listitem="@layout/item_movie"
         tools:showIn="@layout/activity_main" />
 
+    <TextView
+        android:id="@+id/textToDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:clickable="false"
+        android:contextClickable="false"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/lorem[10]" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

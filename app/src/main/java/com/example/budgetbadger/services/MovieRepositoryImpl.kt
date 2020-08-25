@@ -1,4 +1,4 @@
-package com.example.budgetbadger.repository
+package com.example.budgetbadger.services
 
 import com.example.budgetbadger.BuildConfig
 import com.example.budgetbadger.interfaces.MovieRepository

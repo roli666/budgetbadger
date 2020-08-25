@@ -3,7 +3,7 @@ package com.example.budgetbadger.dagger
 import com.example.budgetbadger.BuildConfig
 import com.example.budgetbadger.interfaces.MovieRepository
 import com.example.budgetbadger.mapper.DateAdapter
-import com.example.budgetbadger.repository.MovieRepositoryImpl
+import com.example.budgetbadger.services.MovieRepositoryImpl
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides

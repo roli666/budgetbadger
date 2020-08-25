@@ -15,6 +15,7 @@ import com.example.budgetbadger.adapters.MovieItemAdapter
 import com.example.budgetbadger.databinding.FragmentListBinding
 import com.example.budgetbadger.model.Movie
 import com.example.budgetbadger.viewmodels.MovieListViewModel
+import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -40,20 +41,19 @@ class MovieListFragment : Fragment() {
         binding = FragmentListBinding.inflate(layoutInflater)
         callback = activity as MainActivity
 
-        setMovieAdapter(
-            viewModel.movieList.value!!, getString(R.string.movie_list_text_on_empty)
-        )
+        setMovieAdapter(listOf())
+
+        viewModel.resultText.postValue(getString(R.string.movie_list_text_on_empty))
 
         viewModel.movieList.observe(viewLifecycleOwner, { movies ->
             if (movies.isEmpty()) {
-                if (!binding.searchBar.query.isNullOrEmpty()) {
-                    movieAdapter.textWhenEmpty =
-                        getString(R.string.movie_list_no_result_text) + binding.searchBar.query
+                if (!search_bar.query.isNullOrEmpty()) {
+                    viewModel.resultText.postValue(getString(R.string.movie_list_no_result_text) + search_bar.query)
                 }
             } else {
-                movieAdapter.movies = movies
-                movieAdapter.notifyDataSetChanged()
+                viewModel.resultText.postValue("")
             }
+            movieAdapter.notifyChanges(movieAdapter.movies, movies)
         })
 
         binding.movieList.apply {
@@ -103,18 +103,28 @@ class MovieListFragment : Fragment() {
                         return true
                     } else {
                         searchJob?.cancel()
-                        movieAdapter.textWhenEmpty = getString(R.string.movie_list_text_on_empty)
+                        viewModel.resultText.postValue(getString(R.string.movie_list_text_on_empty))
                     }
                 }
                 return false
             }
         })
 
+        viewModel.resultText.observe(viewLifecycleOwner, {
+            if (it.isEmpty()) {
+                binding.textToDisplay.text = it
+                binding.textToDisplay.visibility = View.GONE
+            } else {
+                binding.textToDisplay.text = it
+                binding.textToDisplay.visibility = View.VISIBLE
+            }
+        })
+
         return binding.root
     }
 
-    private fun setMovieAdapter(movies: MutableList<Movie>, textOnEmptyList: String) {
-        movieAdapter = MovieItemAdapter(movies, textOnEmptyList)
+    private fun setMovieAdapter(movies: List<Movie>) {
+        movieAdapter = MovieItemAdapter(movies)
         movieAdapter.onItemClick = { movie ->
             viewModel.select(movie)
             callback.onMovieSelected(movie)
