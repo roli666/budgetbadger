@@ -16,8 +16,7 @@ import kotlinx.android.synthetic.main.item_movie.view.*
 
 class MovieItemAdapter(
     var movies: List<Movie>
-) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class MovieItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val mTitle: TextView = view.movieTitle
@@ -56,6 +55,7 @@ class MovieItemAdapter(
 
             override fun getNewListSize() = newList.size
         })
+        movies = newList
         diff.dispatchUpdatesTo(this)
     }
 

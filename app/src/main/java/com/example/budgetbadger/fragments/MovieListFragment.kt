@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budgetbadger.MainActivity
@@ -33,6 +34,11 @@ class MovieListFragment : Fragment() {
         fun onMovieSelected(movie: Movie)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setMovieAdapter(listOf())
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,11 +47,23 @@ class MovieListFragment : Fragment() {
         binding = FragmentListBinding.inflate(layoutInflater)
         callback = activity as MainActivity
 
-        setMovieAdapter(listOf())
+        return binding.root
+    }
+
+    private fun setMovieAdapter(movies: List<Movie>) {
+        movieAdapter = MovieItemAdapter(movies)
+        movieAdapter.onItemClick = { movie ->
+            viewModel.select(movie)
+            callback.onMovieSelected(movie)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewModel.resultText.postValue(getString(R.string.movie_list_text_on_empty))
 
-        viewModel.movieList.observe(viewLifecycleOwner, { movies ->
+        viewModel.movieList.observe(viewLifecycleOwner, Observer { movies ->
             if (movies.isEmpty()) {
                 if (!search_bar.query.isNullOrEmpty()) {
                     viewModel.resultText.postValue(getString(R.string.movie_list_no_result_text) + search_bar.query)
@@ -57,60 +75,62 @@ class MovieListFragment : Fragment() {
         })
 
         binding.movieList.apply {
-            layoutManager = LinearLayoutManager(activity)
+            layoutManager = LinearLayoutManager(requireContext())
             adapter = movieAdapter
         }
 
-        binding.movieList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                with(binding.movieList.layoutManager as LinearLayoutManager) {
-                    if (this.findLastCompletelyVisibleItemPosition() == viewModel.movieList.value?.size?.minus(
-                            1
-                        )
-                    ) {
-                        viewModel.loadMore()
-                    }
-                }
-            }
-        })
-
-        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
-            private val debouncePeriod: Long = 500
-            private var searchJob: Job? = null
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.run {
-                    if (!query.isNullOrEmpty()) {
-                        fetchMovies(query, 1)
-                        return true
-                    }
-                }
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.run {
-                    if (!newText.isNullOrEmpty()) {
-                        searchJob?.cancel()
-                        searchJob = CoroutineScope(Dispatchers.Main).launch {
-                            newText.let {
-                                delay(debouncePeriod)
-                                fetchMovies(newText, 1)
-                            }
+        binding.movieList.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    with(binding.movieList.layoutManager as LinearLayoutManager) {
+                        if (this.findLastCompletelyVisibleItemPosition() == viewModel.movieList.value?.size?.minus(
+                                1
+                            )
+                        ) {
+                            viewModel.loadMore()
                         }
-                        return true
-                    } else {
-                        searchJob?.cancel()
-                        viewModel.resultText.postValue(getString(R.string.movie_list_text_on_empty))
                     }
                 }
-                return false
-            }
-        })
+            })
 
-        viewModel.resultText.observe(viewLifecycleOwner, {
+        binding.searchBar.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener,
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                private val debouncePeriod: Long = 500
+                private var searchJob: Job? = null
+
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    viewModel.run {
+                        if (!query.isNullOrEmpty()) {
+                            fetchMovies(query, 1)
+                            return true
+                        }
+                    }
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    viewModel.run {
+                        if (!newText.isNullOrEmpty()) {
+                            searchJob?.cancel()
+                            searchJob = CoroutineScope(Dispatchers.Main).launch {
+                                newText.let {
+                                    delay(debouncePeriod)
+                                    fetchMovies(newText, 1)
+                                }
+                            }
+                            return true
+                        } else {
+                            searchJob?.cancel()
+                            viewModel.resultText.postValue(getString(R.string.movie_list_text_on_empty))
+                        }
+                    }
+                    return false
+                }
+            })
+
+        viewModel.resultText.observe(viewLifecycleOwner, Observer {
             if (it.isEmpty()) {
                 binding.textToDisplay.text = it
                 binding.textToDisplay.visibility = View.GONE
@@ -119,15 +139,5 @@ class MovieListFragment : Fragment() {
                 binding.textToDisplay.visibility = View.VISIBLE
             }
         })
-
-        return binding.root
-    }
-
-    private fun setMovieAdapter(movies: List<Movie>) {
-        movieAdapter = MovieItemAdapter(movies)
-        movieAdapter.onItemClick = { movie ->
-            viewModel.select(movie)
-            callback.onMovieSelected(movie)
-        }
     }
 }
