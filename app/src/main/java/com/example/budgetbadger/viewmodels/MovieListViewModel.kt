@@ -38,7 +38,7 @@ class MovieListViewModel @ViewModelInject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val movies = movieRepo.getMovies(lastQuery, page)
             val oldMovies = movieList.value ?: listOf()
-            movieList.postValue(movies.union(oldMovies).toList())
+            movieList.postValue(oldMovies.plus(movies))
         }
     }
 
